@@ -1,0 +1,13 @@
+/* Copyright (C) 2010 Dirk Dreyer. 
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+
+Prebuild Distribution located in dist directory.
+Put cdi.jar in your classpath. Add CDI (e.g. Weld) in your classpath.
+And add following line to your web.xml if you use a web 2.5 application.
+
+ <!-- Weld Jetty Configuration parameters -->
+    <listener>
+        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+    </listener>
+	
+Be careful to put this listener under the springframework context-listener.
