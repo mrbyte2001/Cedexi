@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.CreationException;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 
@@ -81,7 +82,15 @@ public class SpringBean implements Bean<Object> {
     public Object create(final CreationalContext<Object> context) {
         LOGGER.info(MessageFormat.format("Create bean: {0}", this.beanName));
 
-        return this.beanFactory.getBean(this.beanName);
+        Object bean;
+
+        try {
+            bean = this.beanFactory.getBean(this.beanName);
+        } catch (final Exception e) {
+            throw new CreationException("Spring bean could not be created.", e);
+        }
+
+        return bean;
 
     }
 
@@ -90,10 +99,10 @@ public class SpringBean implements Bean<Object> {
      */
     @Override
     public void destroy(final Object instance, final CreationalContext<Object> context) {
-        LOGGER.info(MessageFormat.format("Destroy Bean: {0}", this.beanName));
         final boolean isPrototype = this.beanFactory.isPrototype(this.beanName);
 
         if (isPrototype) {
+            LOGGER.info(MessageFormat.format("Destroy Bean: {0}", this.beanName));
             this.beanFactory.destroyBean(this.beanName, instance);
             context.release();
         }
