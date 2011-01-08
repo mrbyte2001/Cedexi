@@ -80,12 +80,12 @@ public class SpringBean implements Bean<Object> {
      */
     @Override
     public Object create(final CreationalContext<Object> context) {
-        LOGGER.info(MessageFormat.format("Create bean: {0}", this.beanName));
 
         Object bean;
 
         try {
             bean = this.beanFactory.getBean(this.beanName);
+            LOGGER.info(MessageFormat.format("Got bean: {0}", this.beanName));
         } catch (final Exception e) {
             throw new CreationException("Spring bean could not be created.", e);
         }
