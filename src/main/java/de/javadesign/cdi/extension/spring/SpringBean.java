@@ -147,4 +147,45 @@ public class SpringBean implements Bean<Object> {
         return false;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("SpringBean [");
+        if (this.beanName != null) {
+            builder.append("beanName=");
+            builder.append(this.beanName);
+            builder.append(", ");
+        }
+        if (this.beanClass != null) {
+            builder.append("beanClass=");
+            builder.append(this.beanClass);
+            builder.append(", ");
+        }
+        if (this.beanTypes != null) {
+            builder.append("beanTypes=");
+            builder.append(this.beanTypes);
+            builder.append(", ");
+        }
+        if (this.qualifiers != null) {
+            builder.append("qualifiers=");
+            builder.append(this.qualifiers);
+            builder.append(", ");
+        }
+        if (this.stereotypes != null) {
+            builder.append("stereotypes=");
+            builder.append(this.stereotypes);
+            builder.append(", ");
+        }
+        if (this.beanFactory != null) {
+            builder.append("beanFactory=");
+            builder.append(this.beanFactory);
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

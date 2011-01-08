@@ -91,6 +91,7 @@ public class SpringBeanIntegrationExtension implements Extension {
             springBean = createBean(beanName, beanDefinition, beanFactory, beanManager);
 
             if (springBean != null) {
+                LOGGER.debug("Register Bean: {}.", springBean);
                 event.addBean(springBean);
             }
         }
