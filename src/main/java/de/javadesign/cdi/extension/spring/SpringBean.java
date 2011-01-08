@@ -80,7 +80,9 @@ public class SpringBean implements Bean<Object> {
     @Override
     public Object create(final CreationalContext<Object> context) {
         LOGGER.info(MessageFormat.format("Create bean: {0}", this.beanName));
+
         return this.beanFactory.getBean(this.beanName);
+
     }
 
     /**
@@ -89,8 +91,12 @@ public class SpringBean implements Bean<Object> {
     @Override
     public void destroy(final Object instance, final CreationalContext<Object> context) {
         LOGGER.info(MessageFormat.format("Destroy Bean: {0}", this.beanName));
-        this.beanFactory.destroyBean(this.beanName, instance);
+        final boolean isPrototype = this.beanFactory.isPrototype(this.beanName);
 
+        if (isPrototype) {
+            this.beanFactory.destroyBean(this.beanName, instance);
+            context.release();
+        }
     }
 
     @Override
