@@ -51,6 +51,7 @@ public class SpringBeanIntegrationExtension implements Extension {
      */
     public SpringBeanIntegrationExtension() {
         LOGGER.info(MessageFormat.format("{0} created.", this.getClass().getSimpleName()));
+
     }
 
     /**
@@ -62,6 +63,7 @@ public class SpringBeanIntegrationExtension implements Extension {
      *            the BeanManager
      */
     public void connectCdiAndSpring(@Observes final AfterBeanDiscovery event, final BeanManager beanManager) {
+
         final ConfigurableApplicationContext applicationContext = (ConfigurableApplicationContext) ContextLoader
                 .getCurrentWebApplicationContext();
 
