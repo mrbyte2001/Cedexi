@@ -120,8 +120,7 @@ public class SpringBeanIntegrationExtension implements Extension {
         try {
             if (beanDefinition.getBeanClassName()!=null) {
                 beanClass = Class.forName(beanDefinition.getBeanClassName());
-            } 
-            else {
+            } else {
                 // TODO: Support beans which are created via factory bean.
                 LOGGER.warn("Ignored bean with name {} - there is no definition via bean's class name available", beanName);
                 return CLASS_NOT_FOUND;
