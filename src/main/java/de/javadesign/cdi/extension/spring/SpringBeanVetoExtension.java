@@ -4,7 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.web.context.ContextLoader;
+
+import de.javadesign.cdi.extension.spring.context.ApplicationContextProvider;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Extension;
@@ -27,7 +31,7 @@ public class SpringBeanVetoExtension implements Extension {
     private ConfigurableListableBeanFactory beanFactory;
 
     public SpringBeanVetoExtension() {
-        LOG.info(MessageFormat.format("{0} created.", this.getClass().getSimpleName()));
+        LOG.info(MessageFormat.format("{0} created.", this.getClass().getSimpleName()));        
     }
 
     public void vetoSpringBeans(@Observes ProcessAnnotatedType event) {
@@ -47,8 +51,14 @@ public class SpringBeanVetoExtension implements Extension {
 
     public void init() {
         initialized = true;
-        final ConfigurableApplicationContext applicationContext = (ConfigurableApplicationContext) ContextLoader
+        AbstractApplicationContext applicationContext = (AbstractApplicationContext) ContextLoader
                 .getCurrentWebApplicationContext();
+
+        if (applicationContext==null) {
+            LOG.warn("No Web Spring-ApplicationContext found, try to resolve via application context provider.");
+            applicationContext = (AbstractApplicationContext) ApplicationContextProvider.getApplicationContext();
+        }
+
         if (null != applicationContext) {
             LOG.info("ApplicationContext found.");
             applicationContextFound = true;
