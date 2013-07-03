@@ -4,7 +4,7 @@
     <groupId>de.javadesign.cdi.extension</groupId>
     <artifactId>de.javadesign.cdi.extension</artifactId>
     <packaging>jar</packaging>
-    <version>0.5</version>
+    <version>0.6</version>
     <dependencies>
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
@@ -132,6 +132,18 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-javadoc-plugin</artifactId>
+                 <executions>
+                     <execution>
+	                     <id>attach-javadocs</id>
+	                     <goals>
+	                         <goal>jar</goal>
+	                     </goals>
+                     </execution>
+                 </executions>
+            </plugin>            
         </plugins>
     </build>
 </project>

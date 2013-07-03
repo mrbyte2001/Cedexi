@@ -31,8 +31,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.web.context.ContextLoader;
+
+import de.javadesign.cdi.extension.spring.context.ApplicationContextProvider;
 
 /**
  * CDI Extension to integrate Spring-Beans from Spring-Application-Context. <br />
@@ -51,7 +53,6 @@ public class SpringBeanIntegrationExtension implements Extension {
      */
     public SpringBeanIntegrationExtension() {
         LOGGER.info(MessageFormat.format("{0} created.", this.getClass().getSimpleName()));
-
     }
 
     /**
@@ -64,8 +65,13 @@ public class SpringBeanIntegrationExtension implements Extension {
      */
     public void connectCdiAndSpring(@Observes final AfterBeanDiscovery event, final BeanManager beanManager) {
 
-        final ConfigurableApplicationContext applicationContext = (ConfigurableApplicationContext) ContextLoader
+        AbstractApplicationContext applicationContext = (AbstractApplicationContext) ContextLoader
                 .getCurrentWebApplicationContext();
+        
+        if (applicationContext==null) {
+            LOGGER.warn("No Web Spring-ApplicationContext found, try to resolve via application context provider.");
+            applicationContext = (AbstractApplicationContext) ApplicationContextProvider.getApplicationContext();
+        }
 
         if (applicationContext != null) {
             LOGGER.info("ApplicationContext found.");
@@ -83,7 +89,7 @@ public class SpringBeanIntegrationExtension implements Extension {
      * @param event
      *            the AfterBeanDiscoveryEvent
      */
-    private void registerBeans(final ConfigurableApplicationContext applicationContext, final AfterBeanDiscovery event,
+    private void registerBeans(final AbstractApplicationContext applicationContext, final AfterBeanDiscovery event,
             final BeanManager beanManager) {
         final String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
         final ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
