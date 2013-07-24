@@ -1,1 +1,2 @@
 de.javadesign.cdi.extension.spring.SpringBeanIntegrationExtension
+de.javadesign.cdi.extension.spring.SpringBeanVetoExtension
