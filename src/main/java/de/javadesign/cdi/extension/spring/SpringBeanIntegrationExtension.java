@@ -12,6 +12,8 @@
 package de.javadesign.cdi.extension.spring;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -29,6 +31,7 @@ import javax.enterprise.util.AnnotationLiteral;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -45,6 +48,8 @@ import de.javadesign.cdi.extension.spring.context.ApplicationContextProvider;
 public class SpringBeanIntegrationExtension implements Extension {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("de.javadesign.cdi.extension");
+
+    public static final String METHOD_NAME_GET_OBJECT_TYPE = "getObjectType";
 
     private static final Bean<?> CLASS_NOT_FOUND = null;
 
@@ -124,13 +129,32 @@ public class SpringBeanIntegrationExtension implements Extension {
         Class<?> beanClass = null;
 
         try {
-            if (beanDefinition.getBeanClassName()!=null) {
-                beanClass = Class.forName(beanDefinition.getBeanClassName());
-            } else {
+            if (null == beanDefinition.getBeanClassName()) {
                 // TODO: Support beans which are created via factory bean.
                 LOGGER.warn("Ignored bean with name {} - there is no definition via bean's class name available", beanName);
                 return CLASS_NOT_FOUND;
             }
+            beanClass = Class.forName(beanDefinition.getBeanClassName());
+
+            // FactoryBean? Bean class is returned by getObjectType method
+            for (Class<?> beanClassInterface : beanClass.getInterfaces()) {
+                if (!beanClassInterface.equals(FactoryBean.class)) {
+                    continue;
+                }
+                try {
+                    Method getObjectTypeMethod = beanClass.getDeclaredMethod(METHOD_NAME_GET_OBJECT_TYPE);
+                    String s = ((ParameterizedType) getObjectTypeMethod.getGenericReturnType())
+                            .getActualTypeArguments()[0].toString();
+                    beanClass = Class.forName(s.substring(s.lastIndexOf(" ")+1));
+
+                } catch (NoSuchMethodException ignored) {
+                    LOGGER.warn("Ignored bean {} with Class {} that is assumed to be a FactoryBean, " +
+                            "but has no getObjectType method.", beanName, beanClass);
+                    return CLASS_NOT_FOUND;
+                }
+                break;
+            }
+
         } catch (final ClassNotFoundException e) {
             LOGGER.warn("Class {} not found.", beanName);
             return CLASS_NOT_FOUND;
