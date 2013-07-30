@@ -89,7 +89,7 @@ public class SpringBeanVetoExtension implements Extension {
         String[] names = beanFactory.getBeanDefinitionNames();
         for (String name : names) {
             BeanDefinition definition = beanFactory.getBeanDefinition(name);
-            if (definition.getBeanClassName().equals(clazz.getCanonicalName())) {
+            if (definition.getBeanClassName()!=null && definition.getBeanClassName().equals(clazz.getCanonicalName())) {
                 return true;
             }
         }

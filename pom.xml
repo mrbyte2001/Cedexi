@@ -4,7 +4,7 @@
     <groupId>de.javadesign.cdi.extension</groupId>
     <artifactId>de.javadesign.cdi.extension</artifactId>
     <packaging>jar</packaging>
-    <version>0.8</version>
+    <version>0.9</version>
     <dependencies>
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
