@@ -10,7 +10,7 @@
     <repository>
       <id>Spring.io</id>
       <name>Spring Lib Release Repository</name>
-      <url>https://repo.spring.io/libs-release/</url>
+      <url>https://repo.spring.io/artifactory/libs-release/</url>
       <layout>default</layout>
       <snapshots>
         <enabled>false</enabled>
