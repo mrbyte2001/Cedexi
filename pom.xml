@@ -21,13 +21,13 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>org.springframework.web.servlet</artifactId>
-            <version>3.0.6.RELEASE</version>
-            <type>jar</type>
-            <scope>provided</scope>
+       <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>org.springframework.web.servlet</artifactId>
+         <version>3.0.6.RELEASE</version>
+         <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>javax.faces</groupId>
             <artifactId>jsf-api</artifactId>
