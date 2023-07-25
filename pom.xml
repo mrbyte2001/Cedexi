@@ -6,17 +6,7 @@
     <packaging>jar</packaging>
     <version>0.10</version>
     
-    <repositories>
-    <repository>
-      <id>Spring.io</id>
-      <name>Spring Lib Release Repository</name>
-      <url>https://repo.spring.io/artifactory/libs-release/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
